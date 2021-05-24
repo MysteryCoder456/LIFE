@@ -1,5 +1,4 @@
 #include <iostream>
-#include <algorithm>
 
 #define OLC_PGE_APPLICATION
 #include "olcPixelGameEngine.h"
@@ -18,50 +17,51 @@ public:
 
 private:
 	olc::TileTransformedView tv;
-	std::vector<olc::vi2d> vCells;
+	olc::vi2d vWorldSize = { 64, 45 };
+	int nTotalCells = vWorldSize.x * vWorldSize.y;
+	bool *bCells = new bool [nTotalCells];
 
 private:
 	bool OnUserCreate() override
 	{
-		tv = olc::TileTransformedView({ ScreenWidth(), ScreenHeight() }, { 16, 16 });
+		tv = olc::TileTransformedView({ ScreenWidth(), ScreenHeight() }, { ScreenWidth() / vWorldSize.x, ScreenHeight() / vWorldSize.y });
 		return true;
 	}
 
 	bool OnUserUpdate(float fElapsedTime) override
 	{
-		// Handle pan and zoom
-		if (GetMouse(2).bPressed) tv.StartPan(GetMousePos());
-		if (GetMouse(2).bHeld) tv.UpdatePan(GetMousePos());
-		if (GetMouse(2).bReleased) tv.EndPan(GetMousePos());
-		if (GetMouseWheel() > 0) tv.ZoomAtScreenPos(1.5f, GetMousePos());
-		if (GetMouseWheel() < 0) tv.ZoomAtScreenPos(0.6f, GetMousePos());
-
 		// Placing cells
 		if (GetMouse(0).bHeld)
 		{
 			olc::vi2d vClickPos = tv.ScreenToWorld(GetMousePos());
-
-			if (std::find(vCells.begin(), vCells.end(), vClickPos) == vCells.end())
-				vCells.push_back(vClickPos);
+			int index = vClickPos.y * vWorldSize.x + vClickPos.x;
+			bCells[index] = true;
 		}
 		else if (GetMouse(1).bHeld)
 		{
 			olc::vi2d vClickPos = tv.ScreenToWorld(GetMousePos());
-
-			if (std::find(vCells.begin(), vCells.end(), vClickPos) != vCells.end())
-				std::remove(vCells.begin(), vCells.end(), vClickPos);
+			int index = vClickPos.y * vWorldSize.x + vClickPos.x;
+			bCells[index] = false;
 		}
 
-		for (int i = 0; i < vCells.size(); i++)
-		{
-			// Decide the fate of each cell...
-		}
+//		for (int y = 0; y < vWorldSize.y; y++)
+//		{
+//			for (int x = 0; x < vWorldSize.x; x++)
+//			{
+//				// Decide the fate of each cell...
+//			}
+//		}
 
 		Clear(olc::DARK_BLUE);
 
-		for (olc::vi2d& cell : vCells)
+		for (float y = 0; y < vWorldSize.y; y++)
 		{
-			tv.FillRect(cell, { 1, 1 }, olc::WHITE);
+			for (float x = 0; x < vWorldSize.x; x++)
+			{
+				int index = y * vWorldSize.x + x;
+				if (bCells[index])
+					tv.FillRect({ x, y }, { 1, 1 }, olc::WHITE);
+			}
 		}
 
 		return true;
