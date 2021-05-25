@@ -1,4 +1,5 @@
 #include <iostream>
+#include <algorithm>
 
 #define OLC_PGE_APPLICATION
 #include "olcPixelGameEngine.h"
@@ -22,8 +23,16 @@ private:
 	bool *bCells = new bool [nTotalCells];
 
 private:
+	void ClearMap()
+	{
+		for (int i = 0; i < nTotalCells; i++)
+			bCells[i] = false;
+	}
+
+private:
 	bool OnUserCreate() override
 	{
+		ClearMap();
 		tv = olc::TileTransformedView({ ScreenWidth(), ScreenHeight() }, { ScreenWidth() / vWorldSize.x, ScreenHeight() / vWorldSize.y });
 		return true;
 	}
@@ -42,6 +51,13 @@ private:
 			olc::vi2d vClickPos = tv.ScreenToWorld(GetMousePos());
 			int index = vClickPos.y * vWorldSize.x + vClickPos.x;
 			bCells[index] = false;
+		}
+
+		// Keyboard controls
+		if (GetKey(olc::C).bPressed)
+		{
+			std::cout << "Clearing map...\n";
+			ClearMap();
 		}
 
 //		for (int y = 0; y < vWorldSize.y; y++)
