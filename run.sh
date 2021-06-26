@@ -1,3 +1,3 @@
 sh build.sh
-cd build/default
+cd build
 ./LIFE

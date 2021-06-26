@@ -1,4 +1,4 @@
-mkdir -p build/default
-cd build/default
-cmake ../..
+mkdir -p build
+cd build
+cmake ..
 make
