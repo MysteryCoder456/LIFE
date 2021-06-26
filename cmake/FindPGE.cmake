@@ -53,7 +53,7 @@ if(NOT "${PGE_CORE_INCLUDE_DIRS}" STREQUAL "PGE_CORE_INCLUDE_DIRS-NOTFOUND")
 	set(PGE_INCLUDE_DIRS ${PGE_CORE_INCLUDE_DIRS})
 
 	target_include_directories(PGE INTERFACE ${PGE_INCLUDE_DIRS})
-	
+
 	message(STATUS "Found olcPixelGameEngine version ${VERSION}")
 
 	set(OlcPGE_FOUND True)
@@ -78,10 +78,10 @@ else()
 	set(PGE_LIBRARIES "${PGE_LIBRARIES};${PNG_LIBRARIES}")
 	target_include_directories(PGE INTERFACE ${PNG_INCLUDE_DIRS})
 	set(PGE_INCLUDE_DIRS} "${PGE_INCLUDE_DIRS};${PNG_INCLUDE_DIRS}")
-	
+
 	if(APPLE)
 		find_package(GLUT)
-	
+
 		target_link_libraries(PGE INTERFACE ${GLUT_LIBRARY})
 		set(PGE_LIBRARIES "${PGE_LIBRARIES};${GLUT_LIBRARY}")
 		target_include_directories(PGE INTERFACE ${GLUT_INCLUDE_DIRS})
@@ -91,7 +91,7 @@ else()
 		find_package(Threads)
 		target_link_libraries(PGE INTERFACE Threads::Threads)
 		set(PGE_LIBRARIES "${PGE_LIBRARIES};Threads::Threads")
-		
+
 		find_package(X11)
 		target_include_directories(PGE INTERFACE ${X11_INCLUDE_DIRS})
 		set(PGE_INCLUDE_DIRS} "${PGE_INCLUDE_DIRS};${X11_INCLUDE_DIRS}")
