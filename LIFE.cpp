@@ -20,8 +20,12 @@ private:
     olc::TileTransformedView tv;
     olc::vi2d vWorldSize = {64, 45};
     int nTotalCells = vWorldSize.x * vWorldSize.y;
+
     std::vector<bool> bCells = {};
     std::vector<bool> bTempCells = {};
+
+    const float fFrameTime = 0.4f;
+    float fFrameElapsedTime = 0.0f;
 
 private:
     bool bPause = true;
@@ -93,7 +97,7 @@ private:
         if (GetKey(olc::P).bPressed)
             bPause = !bPause;
 
-        if (!bPause)
+        if (!bPause && fFrameElapsedTime >= fFrameTime)
         {
             // Clear secondary map
             for (int i = 0; i < nTotalCells; i++)
@@ -121,6 +125,9 @@ private:
             // Copy secondary map to actual map
             std::cout << "\n";
             bCells = bTempCells;
+
+            // Reset elapsed frame time to zero
+            fFrameElapsedTime = 0.0f;
         }
 
         Clear(olc::DARK_BLUE);
@@ -137,6 +144,7 @@ private:
             }
         }
 
+        fFrameElapsedTime += fElapsedTime;
         return true;
     }
 };
