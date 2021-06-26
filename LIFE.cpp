@@ -123,7 +123,6 @@ private:
             }
 
             // Copy secondary map to actual map
-            std::cout << "\n";
             bCells = bTempCells;
 
             // Reset elapsed frame time to zero
