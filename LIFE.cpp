@@ -24,7 +24,7 @@ private:
     std::vector<bool> bCells = {};
     std::vector<bool> bTempCells = {};
 
-    const float fFrameTime = 0.4f;
+    const float fFrameTime = 0.2f;
     float fFrameElapsedTime = 0.0f;
 
 private:
