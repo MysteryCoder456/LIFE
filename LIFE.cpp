@@ -18,7 +18,7 @@ public:
 
 private:
     olc::TileTransformedView tv;
-    olc::vi2d vWorldSize = {64, 45};
+    olc::vi2d vWorldSize = {128, 90};
     int nTotalCells = vWorldSize.x * vWorldSize.y;
 
     std::vector<bool> bCells = {};
